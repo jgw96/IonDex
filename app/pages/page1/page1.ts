@@ -75,7 +75,6 @@ export class Page1 implements OnInit {
             this._pokeService.getPokes(name)
                 .subscribe(
                 poke => {
-                    console.log(poke);
                     this._pokeService.saveItem(poke);
 
                     let modal = Modal.create(MyModal, { pokemon: poke });
