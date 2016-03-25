@@ -13,6 +13,9 @@ var gulp = require('gulp'),
 
 var IONIC_DIR = "node_modules/ionic-angular/"
 
+gulp.task('serve:before', ['watch']);
+gulp.task("build:before", ["sass", "copy.fonts", "copy.html"]);
+gulp.task("run:before", ["sass", "copy.fonts", "copy.html"]);
 
 /******************************************************************************
  * watch

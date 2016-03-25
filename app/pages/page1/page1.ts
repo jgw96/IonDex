@@ -1,6 +1,5 @@
 import {Page, Modal, NavController, ViewController} from 'ionic-angular';
 import {HTTP_PROVIDERS} from 'angular2/http';
-import {OnInit} from "angular2/core";
 
 import 'rxjs/Rx';
 
@@ -12,14 +11,15 @@ import {MyModal} from "./poke-modal.ts";
     templateUrl: 'build/pages/page1/page1.html',
     providers: [HTTP_PROVIDERS, PokeService]
 })
-export class Page1 implements OnInit {
+export class Page1 {
 
-    ngOnInit() {
+    onPageDidEnter() {
         if (this._pokeService.parseArray() === null) {
             this.getPoke();
         }
         else {
             this.pokemon = this._pokeService.parseArray();
+            console.log(this.pokemon);
             this.loading = false;
         }
     }
@@ -32,22 +32,20 @@ export class Page1 implements OnInit {
         this.nav = nav;
         this.loading = true;
         this.searchQuery = '';
-
-        /*setTimeout(() => {
-            this.getThirdGen();
-        },5000)*/
     }
 
     public getPoke() {
         let firstGen = this._pokeService.getPokemon()
         firstGen.subscribe(
             pokemon => {
-                let firstGen = pokemon.pokemon_species;
+                let firstGen = pokemon.pokemon_entries;
                 this.pokemon = firstGen;
+
+                this.loading = false;
+
 
                 this._pokeService.saveArray(this.pokemon);
 
-                this.loading = false;
 
             },
             error => alert(error)
@@ -56,20 +54,11 @@ export class Page1 implements OnInit {
 
     }
 
-    public getThirdGen() {
-        this._pokeService.getThirdGenPokemon()
-            .subscribe(
-            thirdGen => {
-                this.pokemon = this.pokemon.concat(thirdGen.pokemon_species);
-            },
-            error => alert(error)
-            )
-    }
 
     public fetchPoke(name: string) {
         this.loading = true;
         
-        console.log(this._pokeService.getItem());
+        console.log(name);
 
         if (this._pokeService.getItem() === null || this._pokeService.getItem().name !== name) {
             this._pokeService.getPokes(name)
@@ -90,7 +79,6 @@ export class Page1 implements OnInit {
         }
         else {
             let poke = this._pokeService.getItem();
-            console.log(poke);
 
             let modal = Modal.create(MyModal, { pokemon: poke });
             this.nav.present(modal);
@@ -106,26 +94,18 @@ export class Page1 implements OnInit {
 
         const q = searchbar.value;
 
-        this._pokeService.getPokemon()
-            .subscribe(
-            pokemon => {
-                this.pokemon = pokemon.pokemon_species;
-                this.loading = false;
+        this.pokemon = this._pokeService.parseArray();
 
-                if (q.trim() == '') {
-                    return;
-                }
+        if (q.trim() === '') {
+            return;
+        }
 
-                this.pokemon = this.pokemon.filter((v: any) => {
-                    if (v.name.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-                        return true;
-                    }
-                    return false;
-                })
-
-            },
-            error => alert(error)
-            )
+        this.pokemon = this.pokemon.filter((v: any) => {
+            if (v.pokemon_species.name.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+                return true;
+            }
+            return false;
+        })
 
     }
 

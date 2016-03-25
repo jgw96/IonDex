@@ -22,8 +22,8 @@
     <ion-searchbar [hidden]="loading" [(ngModel)]="searchQuery" (input)="getItems($event)"></ion-searchbar>
 
     <ion-list [hidden]="loading">
-        <ion-item (click)="fetchPoke(poke.name)" *ngFor="#poke of pokemon">
-            {{poke.name}}
+        <ion-item (click)="fetchPoke(poke.pokemon_species.name)" *ngFor="#poke of pokemon">
+            {{poke.pokemon_species.name}}
 
             <button clear item-right>
                 <ion-icon name="arrow-forward"></ion-icon>

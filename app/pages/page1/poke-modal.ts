@@ -40,6 +40,24 @@ import {PokeService} from "../../services/pokeService/poke-service";
           </ion-item>
         </ion-list>
         
+        <h4 style="color: {{color}};" id="movesTitle">Where to catch</h4>
+        <ion-list [hidden]="noLocations">
+          <ion-item *ngFor="#location of locations">
+            <h2>{{location.location_area.name}}</h2>
+            <p>Game version: {{location.version_details[0].version.name}}</p>
+            <p>Max chance: {{location.version_details[0].max_chance}}</p>
+          </ion-item>
+        </ion-list>
+        
+        <ion-card [hidden]="!noLocations">
+          <ion-card-header>
+            Cant be caught
+          </ion-card-header>
+          <ion-card-content>
+            Sorry this pokemon can not be caught in the wild.
+          </ion-card-content>
+        </ion-card>
+        
         <h4 style="color: {{color}};" id="movesTitle">Moves</h4>
         <ion-list>
           <ion-item *ngFor="#move of moves">
@@ -87,10 +105,14 @@ export class MyModal {
     public color: string;
     public height: string;
     public weight: string;
+    public locations: any[];
+    public noLocations: boolean;
 
     constructor(public viewCtrl: ViewController, private params: NavParams, private _pokeService: PokeService) {
         this.viewCtrl = viewCtrl;
         this.pokemon = params.get("pokemon");
+        
+        console.log(this.pokemon);
 
         this.sprite = this.pokemon.sprites.front_default;
 
@@ -110,10 +132,18 @@ export class MyModal {
         this.moves = this.pokemon.moves;
         this.height = this.pokemon.height;
         this.weight = this.pokemon.weight;
+        this.locations = this.pokemon.location_area_encounters;
+        
+        if (this.locations.length === 0) {
+            this.noLocations = true;
+        }
+        else {
+            this.noLocations = false;
+        }
 
         this.exp = this.pokemon.base_experience;
 
-        console.log(this.pokemon)
+        console.log(this.locations)
         this.name = this.pokemon.name;
         this.pokemon.types.forEach((type) => {
             this.types.push(type.type.name);
