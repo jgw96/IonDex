@@ -19,7 +19,6 @@ export class Page1 {
         }
         else {
             this.pokemon = this._pokeService.parseArray();
-            console.log(this.pokemon);
             this.loading = false;
         }
     }
@@ -32,6 +31,8 @@ export class Page1 {
         this.nav = nav;
         this.loading = true;
         this.searchQuery = '';
+        
+        this.pokemon = [];
     }
 
     public getPoke() {
@@ -54,12 +55,8 @@ export class Page1 {
 
     }
 
-
     public fetchPoke(name: string) {
         this.loading = true;
-        
-        console.log(name);
-
         if (this._pokeService.getItem() === null || this._pokeService.getItem().name !== name) {
             this._pokeService.getPokes(name)
                 .subscribe(
