@@ -24,6 +24,7 @@ import {PokeService} from "../../services/pokeService/poke-service";
         <p>Base Exp: {{exp}}</p>
         <p>Height: {{height}}</p>
         <p>Weight: {{weight}}</p>
+        <ion-card padding>
         <ion-list>
           <ion-list-header style="color: {{color}};">
             Stats
@@ -39,15 +40,18 @@ import {PokeService} from "../../services/pokeService/poke-service";
             <p *ngIf="ability.hidden > 0">Hidden</p>
           </ion-item>
         </ion-list>
+        </ion-card>
         
         <h4 style="color: {{color}};" id="movesTitle">Where to catch</h4>
-        <ion-list [hidden]="noLocations">
+        <ion-card [hidden]="noLocations" padding>
+        <ion-list>
           <ion-item *ngFor="#location of locations">
             <h2>{{location.location_area.name}}</h2>
             <p>Game version: {{location.version_details[0].version.name}}</p>
             <p>Max chance: {{location.version_details[0].max_chance}}</p>
           </ion-item>
         </ion-list>
+        </ion-card>
         
         <ion-card [hidden]="!noLocations">
           <ion-card-header>
@@ -59,6 +63,7 @@ import {PokeService} from "../../services/pokeService/poke-service";
         </ion-card>
         
         <h4 style="color: {{color}};" id="movesTitle">Moves</h4>
+        <ion-card>
         <ion-list>
           <ion-item *ngFor="#move of moves">
             <h2>{{move.move.name}}</h2> 
@@ -66,6 +71,7 @@ import {PokeService} from "../../services/pokeService/poke-service";
             <p *ngIf="move.version_group_details[0].level_learned_at > 0">Learned at level {{move.version_group_details[0].level_learned_at}}</p>
           </ion-item>
         </ion-list>
+        </ion-card>
         
   </ion-content>
   
