@@ -24,7 +24,7 @@ export class Page1 implements OnInit {
         }
     }
 
-    pokemon: any;
+    pokemon: Object[];
     loading: boolean;
     public searchQuery: string;
 
