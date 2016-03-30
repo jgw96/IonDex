@@ -34,8 +34,6 @@ export class Page1 implements OnInit {
         this.searchQuery = '';
 
         this.pokemon = [];
-
-        console.log("executed");
     }
 
     public getPoke() {
@@ -64,14 +62,13 @@ export class Page1 implements OnInit {
             this._pokeService.getPokes(name)
                 .subscribe(
                 poke => {
-                    this._pokeService.saveItem(poke);
-
                     let modal = Modal.create(MyModal, { pokemon: poke });
                     this.nav.present(modal);
 
                     setTimeout(() => {
                         this.loading = false;
-                    }, 400)
+                        this._pokeService.saveItem(poke);
+                    }, 500)
 
                 },
                 error => alert(error)
@@ -79,13 +76,12 @@ export class Page1 implements OnInit {
         }
         else {
             let poke = this._pokeService.getItem();
-
-            let modal = Modal.create(MyModal, { pokemon: poke });
-            this.nav.present(modal);
+            this.loading = false;
 
             setTimeout(() => {
-                this.loading = false;
-            }, 400)
+                let modal = Modal.create(MyModal, { pokemon: poke });
+                this.nav.present(modal);
+            }, 500)
         }
 
     }
