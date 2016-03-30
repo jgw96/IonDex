@@ -1,5 +1,6 @@
 import {Page, Modal, NavController, ViewController} from 'ionic-angular';
 import {HTTP_PROVIDERS} from 'angular2/http';
+import {OnInit} from "angular2/core";
 
 import 'rxjs/Rx';
 
@@ -11,9 +12,9 @@ import {MyModal} from "./poke-modal.ts";
     templateUrl: 'build/pages/page1/page1.html',
     providers: [HTTP_PROVIDERS, PokeService]
 })
-export class Page1 {
+export class Page1 implements OnInit {
 
-    onPageDidEnter() {
+    ngOnInit() {
         if (this._pokeService.parseArray() === null) {
             this.getPoke();
         }
@@ -31,8 +32,10 @@ export class Page1 {
         this.nav = nav;
         this.loading = true;
         this.searchQuery = '';
-        
+
         this.pokemon = [];
+
+        console.log("executed");
     }
 
     public getPoke() {
