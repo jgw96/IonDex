@@ -20,7 +20,7 @@
     </div>
 
     <ion-searchbar [hidden]="loading" [(ngModel)]="searchQuery" (input)="getItems($event)"></ion-searchbar>
-    
+
     <ion-row [hidden]="loading">
         <ion-col width-33 *ngFor="#chosen of lastChosen">
             <button (click)="fetchPoke(chosen)" clear>

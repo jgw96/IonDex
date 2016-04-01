@@ -1,4 +1,4 @@
-import {Page, Modal, NavController, ViewController, Alert} from 'ionic-angular';
+import {Page, Modal, NavController, ViewController} from 'ionic-angular';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {OnInit} from "angular2/core";
 
@@ -46,6 +46,7 @@ export class Page1 implements OnInit {
         firstGen.subscribe(
             pokemon => {
                 let firstGen = pokemon.pokemon_entries;
+
                 this.pokemon = firstGen;
 
                 this.loading = false;
