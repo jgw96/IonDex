@@ -20,10 +20,12 @@ import {PokeService} from "../../services/pokeService/poke-service";
   <ion-content padding>
         <h4 style="color: {{color}};">{{name}}</h4>
         <img id="sprite" [src]="sprite">
+        <p id="description">{{description}}</p>
         Type: <span *ngFor="#type of types"> {{type}} </span>
         <p>Base Exp: {{exp}}</p>
         <p>Height: {{height}} inches</p>
         <p>Weight: {{weight}} pounds</p>
+        
         <ion-card padding>
         <ion-list>
           <ion-list-header style="color: {{color}};">
@@ -73,6 +75,15 @@ import {PokeService} from "../../services/pokeService/poke-service";
         </ion-list>
         </ion-card>
         
+        <ion-card padding [hidden]="noEvolution">
+          <img id="evolFrom" [src]="evolvedFromSprite">
+          <ion-card-content>
+            <ion-card-title>
+              Evolves From: {{evolvedFrom}}
+            </ion-card-title>
+          </ion-card-content>
+        </ion-card>
+        
   </ion-content>
   
   <button (click)="addPoke(name, sprite)" style="postion: absolute; z-index:9999;" id="addButton" fab fab-bottom fab-right>
@@ -93,6 +104,11 @@ import {PokeService} from "../../services/pokeService/poke-service";
         #movesTitle {
             margin-top: 2em;
         }
+        
+        #description {
+            width: 65%;
+        }
+        
       `
     ],
     providers: [PokeService]
@@ -113,11 +129,15 @@ export class MyModal {
     public weight: string;
     public locations: any[];
     public noLocations: boolean;
+    public description: string;
+    public evolvedFrom: string;
+    public evolvedFromSprite: string;
+    public noEvolution: boolean;
 
     constructor(public viewCtrl: ViewController, private params: NavParams, private _pokeService: PokeService) {
         this.viewCtrl = viewCtrl;
         this.pokemon = params.get("pokemon");
-        
+
         console.log(this.pokemon);
 
         this.sprite = this.pokemon.sprites.front_default;
@@ -127,7 +147,26 @@ export class MyModal {
         this._pokeService.getColor(this.colorUrl)
             .subscribe(
             color => {
+                console.log(color);
                 this.color = color.color.name;
+                this.description = color.flavor_text_entries[1].flavor_text;
+                if (color.evolves_from_species !== null) {
+                    this.evolvedFrom = color.evolves_from_species.name;
+                    this.noEvolution = false;
+
+                    fetch(`https://pokeapi.co/api/v2/pokemon/${this.evolvedFrom}`).then((response) => {
+                        return response.json();
+                    }).then((pokemon) => {
+                        console.log(pokemon);
+                        this.evolvedFromSprite = pokemon.sprites.front_default;
+                    }).catch(() => {
+                        console.log("error");
+                    })
+                }
+                else {
+                    this.noEvolution = true;
+                }
+
             },
             error => alert(error)
             )
@@ -139,7 +178,7 @@ export class MyModal {
         this.height = this.pokemon.height;
         this.weight = this.pokemon.weight;
         this.locations = this.pokemon.location_area_encounters;
-        
+
         if (this.locations.length === 0) {
             this.noLocations = true;
         }
@@ -149,7 +188,6 @@ export class MyModal {
 
         this.exp = this.pokemon.base_experience;
 
-        console.log(this.locations)
         this.name = this.pokemon.name;
         this.pokemon.types.forEach((type) => {
             this.types.push(type.type.name);
@@ -170,7 +208,7 @@ export class MyModal {
     public addPoke(name: string, sprite: string) {
         let pokemon: any = { name: name, sprite: sprite };
         this._pokeService.addPokemon(pokemon);
-        
+
         let notify = Toast.showShortBottom(`${name} added to team!`);
         notify.subscribe(success => {
             console.log(success);
