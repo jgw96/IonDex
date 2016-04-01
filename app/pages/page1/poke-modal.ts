@@ -22,8 +22,8 @@ import {PokeService} from "../../services/pokeService/poke-service";
         <img id="sprite" [src]="sprite">
         Type: <span *ngFor="#type of types"> {{type}} </span>
         <p>Base Exp: {{exp}}</p>
-        <p>Height: {{height}}</p>
-        <p>Weight: {{weight}}</p>
+        <p>Height: {{height}} inches</p>
+        <p>Weight: {{weight}} pounds</p>
         <ion-card padding>
         <ion-list>
           <ion-list-header style="color: {{color}};">

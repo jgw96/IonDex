@@ -1,4 +1,4 @@
-import {Page, Modal, NavController, ViewController} from 'ionic-angular';
+import {Page, Modal, NavController, ViewController, Alert} from 'ionic-angular';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {OnInit} from "angular2/core";
 
@@ -27,13 +27,18 @@ export class Page1 implements OnInit {
     pokemon: Object[];
     loading: boolean;
     public searchQuery: string;
+    lastChosen: any[];
 
-    constructor(private _pokeService: PokeService, public nav: NavController) {
+    constructor(private _pokeService: PokeService, public nav: NavController, private _viewCtrl: ViewController) {
         this.nav = nav;
+        this._viewCtrl = _viewCtrl;
         this.loading = true;
         this.searchQuery = '';
 
         this.pokemon = [];
+        this.lastChosen = [];
+
+
     }
 
     public getPoke() {
@@ -68,6 +73,15 @@ export class Page1 implements OnInit {
                     setTimeout(() => {
                         this.loading = false;
                         this._pokeService.saveItem(poke);
+
+                        if (this.lastChosen.length < 3) {
+                            this.lastChosen.push(name);
+                        }
+                        else {
+                            this.lastChosen.length = 0;
+                            this.lastChosen.push(name);
+                        }
+
                     }, 500)
 
                 },
@@ -82,6 +96,14 @@ export class Page1 implements OnInit {
                 let modal = Modal.create(MyModal, { pokemon: poke });
                 this.nav.present(modal);
             }, 500)
+
+            if (this.lastChosen.length < 3) {
+                this.lastChosen.push(name);
+            }
+            else {
+                this.lastChosen.length = 0;
+                this.lastChosen.push(name);
+            }
         }
 
     }
