@@ -45,7 +45,6 @@ export class Page2 {
     }
     
     shareTeam() {
-        console.log(this.pokemon);
         let shareString: string = "Check out my team:";
         
         this.pokemon.forEach((poke) => {
