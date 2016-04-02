@@ -8,94 +8,7 @@ import {PokeService} from "../../services/pokeService/poke-service";
 
 
 @Page({
-    template: `
-  <ion-navbar primary *navbar>
-    <ion-title>{{name}}</ion-title>
-    <ion-buttons start>
-    <button (click)="close()">
-      <ion-icon name='close'></ion-icon>
-    </button>
-  </ion-buttons>
-  </ion-navbar>
-  <ion-content padding>
-        <h4 style="color: {{color}};">{{name}}</h4>
-        <img id="sprite" [src]="sprite">
-        <p id="description">{{description}}</p>
-        Type: <span *ngFor="#type of types"> {{type}} </span>
-        <p>Base Exp: {{exp}}</p>
-        <p>Height: {{height}} inches</p>
-        <p>Weight: {{weight}} pounds</p>
-        
-        <ion-card padding>
-        <ion-list>
-          <ion-list-header style="color: {{color}};">
-            Stats
-          </ion-list-header>
-          <ion-item *ngFor="#stat of stats">
-            <div>{{stat.stat.name}}: {{stat.base_stat}}</div>
-          </ion-item>
-          <ion-list-header style="color: {{color}};">
-            Abilities
-          </ion-list-header>
-          <ion-item *ngFor="#ability of abilities">
-            {{ability.name}}
-            <p *ngIf="ability.hidden > 0">Hidden</p>
-          </ion-item>
-        </ion-list>
-        </ion-card>
-        
-        <h4 style="color: {{color}};" id="movesTitle">Where to catch</h4>
-        <ion-card [hidden]="noLocations" padding>
-        <ion-list>
-          <ion-item *ngFor="#location of locations">
-            <h2>{{location.location_area.name}}</h2>
-            <p>Game version: {{location.version_details[0].version.name}}</p>
-            <p>Max chance: {{location.version_details[0].max_chance}}</p>
-          </ion-item>
-        </ion-list>
-        </ion-card>
-        
-        <ion-card [hidden]="!noLocations">
-          <ion-card-header>
-            Cant be caught
-          </ion-card-header>
-          <ion-card-content>
-            Sorry this pokemon can not be caught in the wild.
-          </ion-card-content>
-        </ion-card>
-        
-        <h4 style="color: {{color}};" id="movesTitle">Moves</h4>
-        <ion-card>
-        <ion-list>
-          <ion-item (click)="getMoveInfo(move.move.url)" *ngFor="#move of moves">
-            <h2>{{move.move.name}}</h2> 
-            <p>{{move.version_group_details[0].move_learn_method.name}}</p>
-            <p *ngIf="move.version_group_details[0].level_learned_at > 0">Learned at level {{move.version_group_details[0].level_learned_at}}</p>
-            
-            <button clear item-right>
-                <ion-icon name="arrow-forward"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
-        </ion-card>
-        
-        <ion-card padding [hidden]="noEvolution">
-          <img id="evolFrom" [src]="evolvedFromSprite">
-          <ion-card-content>
-            <ion-card-title>
-              Evolves From: {{evolvedFrom}}
-            </ion-card-title>
-          </ion-card-content>
-        </ion-card>
-        
-  </ion-content>
-  
-  <button (click)="addPoke(name, sprite)" style="postion: absolute; z-index:9999;" id="addButton" fab fab-bottom fab-right>
-    <ion-icon name="add"></ion-icon>
-  </button>
-  
-  
-  `,
+    templateUrl: "build/pages/page1/modal.html",
     styles: [
         `
         #sprite {
@@ -223,7 +136,7 @@ export class MyModal {
     public getMoveInfo(url: string) {
 
         let alert = Alert.create({
-            title: "Loading",
+            title: "Loading...",
             buttons: ['Done']
         });
         this.nav.present(alert);
