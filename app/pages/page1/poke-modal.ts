@@ -1,4 +1,4 @@
-import {Page, Modal, NavController, ViewController, NavParams} from 'ionic-angular';
+import {Page, Modal, NavController, ViewController, NavParams, Alert} from 'ionic-angular';
 import {Toast} from "ionic-native";
 import {HTTP_PROVIDERS} from 'angular2/http';
 
@@ -67,10 +67,14 @@ import {PokeService} from "../../services/pokeService/poke-service";
         <h4 style="color: {{color}};" id="movesTitle">Moves</h4>
         <ion-card>
         <ion-list>
-          <ion-item *ngFor="#move of moves">
+          <ion-item (click)="getMoveInfo(move.move.url)" *ngFor="#move of moves">
             <h2>{{move.move.name}}</h2> 
             <p>{{move.version_group_details[0].move_learn_method.name}}</p>
             <p *ngIf="move.version_group_details[0].level_learned_at > 0">Learned at level {{move.version_group_details[0].level_learned_at}}</p>
+            
+            <button clear item-right>
+                <ion-icon name="arrow-forward"></ion-icon>
+            </button>
           </ion-item>
         </ion-list>
         </ion-card>
@@ -134,8 +138,9 @@ export class MyModal {
     public evolvedFromSprite: string;
     public noEvolution: boolean;
 
-    constructor(public viewCtrl: ViewController, private params: NavParams, private _pokeService: PokeService) {
+    constructor(public viewCtrl: ViewController, private params: NavParams, private _pokeService: PokeService, public nav: NavController) {
         this.viewCtrl = viewCtrl;
+        this.nav = nav;
         this.pokemon = params.get("pokemon");
 
         console.log(this.pokemon);
@@ -213,6 +218,47 @@ export class MyModal {
         notify.subscribe(success => {
             console.log(success);
         });
+    }
+
+    public getMoveInfo(url: string) {
+
+        let alert = Alert.create({
+            title: "Loading",
+            buttons: ['Done']
+        });
+        this.nav.present(alert);
+
+
+        this._pokeService.getColor(url)
+            .subscribe(
+            moveInfo => {
+                console.log(moveInfo);
+
+                if (moveInfo.accuracy === null) {
+                    moveInfo.accuracy = "Not available";
+                }
+
+                if (moveInfo.power === null) {
+                    moveInfo.power = "Not available";
+                }
+                
+                alert.setTitle(`${moveInfo.name}`);
+                
+                alert.setMessage(
+                    `
+                        <p>Type: ${moveInfo.type.name}</p>
+                        <p>Accuracy: ${moveInfo.accuracy}</p>
+                        <p>Power: ${moveInfo.power}</p>
+                        <p>pp: ${moveInfo.pp}</p>
+                        <p>Critical Hit Rate: ${moveInfo.meta.crit_rate}</p>
+                    `
+                );
+
+            },
+            error => {
+                console.log(alert);
+            }
+            )
     }
 
     close() {
