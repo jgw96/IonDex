@@ -85,7 +85,7 @@ export class Page1 implements OnInit {
                             this.lastChosen.push(name);
                         }
 
-                    }, 500)
+                    }, 1000)
 
                 },
                 error => alert(error)
@@ -131,33 +131,15 @@ export class Page1 implements OnInit {
     }
 
     public voiceSearch(searchbar: any) {
-
-        let alert = Alert.create({
-            title: 'Listening...',
-            subTitle: 'Speak a pokemons name'
-        });
+        let maxMatches = 1;
+        let promptString = "Speak a pokemon's name";
         
-        let recognition = new webkitSpeechRecognition();
-        
-        this.nav.present(alert);
-
-        recognition.start();
-
-        recognition.onresult = (event) => {
-            if (event.results.length > 0) {
-                console.log(event.results[0][0].transcript);
-                this.searchTerm = event.results[0][0].transcript;
-            }
-        }
-
-        recognition.onspeechend = () => {
-            alert.dismiss();
-            
-            setTimeout(() => {
-                recognition.stop();
-                this.fetchPoke(this.searchTerm.toLowerCase());
-            }, 1000)
-        }
+        window.plugins.speechrecognizer.startRecognize((result) => {
+            console.log(result[0]);
+            this.fetchPoke(result[0].toLowerCase());
+        }, function(errorMessage) {
+            console.log("Error message: " + errorMessage);
+        }, maxMatches, promptString);
 
     }
 

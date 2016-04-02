@@ -35,6 +35,10 @@
     {
       "locator": "https://github.com/macdonst/SpeechRecognitionPlugin",
       "id": "org.apache.cordova.speech.speechrecognition"
+    },
+    {
+      "locator": "https://github.com/poiuytrez/SpeechRecognizer",
+      "id": "cordova-plugin-speechrecognizer"
     }
   ],
   "cordovaPlatforms": [
