@@ -1,4 +1,4 @@
-import {Page, Modal, NavController, ViewController} from 'ionic-angular';
+import {Page, Modal, NavController, ViewController, Alert} from 'ionic-angular';
 import {HTTP_PROVIDERS} from 'angular2/http';
 import {OnInit} from "angular2/core";
 
@@ -24,10 +24,12 @@ export class Page1 implements OnInit {
         }
     }
 
-    pokemon: Object[];
-    loading: boolean;
+    public pokemon: Object[];
+    private loading: boolean;
     public searchQuery: string;
-    lastChosen: any[];
+    public lastChosen: any[];
+    public searchbar: any;
+    public searchTerm: any;
 
     constructor(private _pokeService: PokeService, public nav: NavController, private _viewCtrl: ViewController) {
         this.nav = nav;
@@ -109,7 +111,7 @@ export class Page1 implements OnInit {
 
     }
 
-    getItems(searchbar) {
+    public getItems(searchbar) {
 
         const q = searchbar.value;
 
@@ -125,6 +127,37 @@ export class Page1 implements OnInit {
             }
             return false;
         })
+
+    }
+
+    public voiceSearch(searchbar: any) {
+
+        let alert = Alert.create({
+            title: 'Listening...',
+            subTitle: 'Speak a pokemons name'
+        });
+        
+        let recognition = new webkitSpeechRecognition();
+        
+        this.nav.present(alert);
+
+        recognition.start();
+
+        recognition.onresult = (event) => {
+            if (event.results.length > 0) {
+                console.log(event.results[0][0].transcript);
+                this.searchTerm = event.results[0][0].transcript;
+            }
+        }
+
+        recognition.onspeechend = () => {
+            alert.dismiss();
+            
+            setTimeout(() => {
+                recognition.stop();
+                this.fetchPoke(this.searchTerm.toLowerCase());
+            }, 1000)
+        }
 
     }
 

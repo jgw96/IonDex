@@ -4,6 +4,8 @@ import {TabsPage} from './pages/tabs/tabs';
 // https://angular.io/docs/ts/latest/api/core/Type-interface.html
 import {Type} from 'angular2/core';
 
+import 'rxjs/Rx';
+
 import { enableProdMode } from 'angular2/core';
 enableProdMode();
 

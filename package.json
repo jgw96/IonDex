@@ -31,7 +31,11 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "cordova-plugin-x-socialsharing",
-    "cordova-plugin-x-toast"
+    "cordova-plugin-x-toast",
+    {
+      "locator": "https://github.com/macdonst/SpeechRecognitionPlugin",
+      "id": "org.apache.cordova.speech.speechrecognition"
+    }
   ],
   "cordovaPlatforms": [
     "ios",

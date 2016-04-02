@@ -6,14 +6,17 @@
         </button>
     </ion-buttons>
 </ion-navbar>
-<ion-content padding>
-    <h4 style="color: {{color}};">{{name}}</h4>
-    <img id="sprite" [src]="sprite">
-    <p id="description">{{description}}</p>
-    Type: <span *ngFor="#type of types"> {{type}} </span>
-    <p>Base Exp: {{exp}}</p>
-    <p>Height: {{height}} inches</p>
-    <p>Weight: {{weight}} pounds</p>
+<ion-content>
+
+    <div padding>
+        <h4 style="color: {{color}};">{{name}}</h4>
+        <img id="sprite" [src]="sprite">
+        <p id="description">{{description}}</p>
+        Type: <span *ngFor="#type of types"> {{type}} </span>
+        <p>Base Exp: {{exp}}</p>
+        <p>Height: {{height}} inches</p>
+        <p>Weight: {{weight}} pounds</p>
+    </div>
 
     <ion-card padding>
         <ion-list>

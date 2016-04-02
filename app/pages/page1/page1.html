@@ -19,7 +19,7 @@
         <div class="sk-circle12 sk-circle"></div>
     </div>
 
-    <ion-searchbar [hidden]="loading" [(ngModel)]="searchQuery" (input)="getItems($event)"></ion-searchbar>
+    <ion-searchbar #searchbar [hidden]="loading" [(ngModel)]="searchQuery" (input)="getItems($event)"></ion-searchbar>
 
     <ion-row [hidden]="loading">
         <ion-col width-33 *ngFor="#chosen of lastChosen">
@@ -41,3 +41,7 @@
     </ion-list>
 
 </ion-content>
+
+<button (click)="voiceSearch(searchbar.value)" style="postion: absolute; z-index:9999;" id="addButton" fab fab-bottom fab-right>
+    <ion-icon name="microphone"></ion-icon>
+</button>

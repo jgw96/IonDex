@@ -2,8 +2,6 @@ import {Page, Modal, NavController, ViewController, NavParams, Alert} from 'ioni
 import {Toast} from "ionic-native";
 import {HTTP_PROVIDERS} from 'angular2/http';
 
-import 'rxjs/Rx';
-
 import {PokeService} from "../../services/pokeService/poke-service";
 
 
@@ -20,6 +18,7 @@ import {PokeService} from "../../services/pokeService/poke-service";
         
         #movesTitle {
             margin-top: 2em;
+            margin-left: 3%;
         }
         
         #description {
